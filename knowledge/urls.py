@@ -1,6 +1,6 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns('knowledge.views',
+urlpatterns = ['knowledge.views',
     url(r'^$', 'knowledge_index', name='knowledge_index'),
 
     url(r'^questions/$', 'knowledge_list', name='knowledge_list'),
@@ -19,4 +19,4 @@ urlpatterns = patterns('knowledge.views',
         'knowledge_moderate', name='knowledge_moderate'),
 
     url(r'^ask/$', 'knowledge_ask', name='knowledge_ask'),
-)
+]
