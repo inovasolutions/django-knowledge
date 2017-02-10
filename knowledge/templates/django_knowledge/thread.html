@@ -3,7 +3,6 @@
 {% load i18n %}
 {% load mezzanine_tags %}
 {% load knowledge_tags %}
-{% load url from future %}
 
 {% block title %}{{ question.title }}{% endblock title %}
 
@@ -58,9 +57,9 @@
   {% endfor %}
 
 
-  <br/> 
+  <br/>
   <hr class="light"/>
-  <br/> 
+  <br/>
 
 
   {% if form %}
