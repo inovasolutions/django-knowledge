@@ -1,6 +1,6 @@
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
 from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 class CustomRelatedFieldWidgetWrapper(RelatedFieldWidgetWrapper):
 

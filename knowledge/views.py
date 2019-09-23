@@ -1,13 +1,13 @@
-import settings
+from . import settings
 
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.urls import reverse, NoReverseMatch
 from django.db.models import Q
 
-from models import Question, Response, Category
-from forms import QuestionForm, ResponseForm
-from utils import paginate
+from knowledge.models import Question, Response, Category
+from knowledge.forms import QuestionForm, ResponseForm
+from knowledge.utils import paginate
 
 
 ALLOWED_MODS = {
@@ -24,10 +24,10 @@ ALLOWED_MODS = {
 
 def get_my_questions(request):
 
-    if settings.LOGIN_REQUIRED and not request.user.is_authenticated():
+    if settings.LOGIN_REQUIRED and not request.user.is_authenticated:
         return HttpResponseRedirect(settings.LOGIN_URL+"?next=%s" % request.path)
 
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         return None
     else:
         return Question.objects.can_view(request.user)\
@@ -37,7 +37,7 @@ def get_my_questions(request):
 def knowledge_index(request,
                     template='django_knowledge/index.html'):
 
-    if settings.LOGIN_REQUIRED and not request.user.is_authenticated():
+    if settings.LOGIN_REQUIRED and not request.user.is_authenticated:
         return HttpResponseRedirect(settings.LOGIN_URL+"?next=%s" % request.path)
 
     questions = Question.objects.can_view(request.user)\
@@ -59,7 +59,7 @@ def knowledge_list(request,
                    template='django_knowledge/list.html',
                    Form=QuestionForm):
 
-    if settings.LOGIN_REQUIRED and not request.user.is_authenticated():
+    if settings.LOGIN_REQUIRED and not request.user.is_authenticated:
         return HttpResponseRedirect(settings.LOGIN_URL+"?next=%s" % request.path)
 
     search = request.GET.get('title', None)
@@ -100,7 +100,7 @@ def knowledge_thread(request,
                      template='django_knowledge/thread.html',
                      Form=ResponseForm):
 
-    if settings.LOGIN_REQUIRED and not request.user.is_authenticated():
+    if settings.LOGIN_REQUIRED and not request.user.is_authenticated:
         return HttpResponseRedirect(settings.LOGIN_URL+"?next=%s" % request.path)
     
     try:
@@ -121,7 +121,7 @@ def knowledge_thread(request,
     if request.method == 'POST':
         form = Form(request.user, question, request.POST)
         if form and form.is_valid():
-            if request.user.is_authenticated() or not form.cleaned_data['phone_number']:
+            if request.user.is_authenticated or not form.cleaned_data['phone_number']:
                 form.save()
             return redirect(question.get_absolute_url())
     else:
@@ -159,7 +159,7 @@ def knowledge_moderate(
 
     """
 
-    if settings.LOGIN_REQUIRED and not request.user.is_authenticated():
+    if settings.LOGIN_REQUIRED and not request.user.is_authenticated:
         return HttpResponseRedirect(settings.LOGIN_URL+"?next=%s" % request.path)
 
     if request.method != 'POST':
@@ -199,14 +199,14 @@ def knowledge_ask(request,
                   template='django_knowledge/ask.html',
                   Form=QuestionForm):
 
-    if settings.LOGIN_REQUIRED and not request.user.is_authenticated():
+    if settings.LOGIN_REQUIRED and not request.user.is_authenticated:
         return HttpResponseRedirect(settings.LOGIN_URL+"?next=%s" % request.path)
 
     
     if request.method == 'POST':
         form = Form(request.user, request.POST)
         if form and form.is_valid():
-            if request.user.is_authenticated() or not form.cleaned_data['phone_number']:
+            if request.user.is_authenticated or not form.cleaned_data['phone_number']:
                 question = form.save()
                 return redirect(question.get_absolute_url())
             else:

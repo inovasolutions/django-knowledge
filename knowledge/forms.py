@@ -1,11 +1,11 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-import settings
-from models import Question, Response, Category
-from widgets import CustomRelatedFieldWidgetWrapper
+from . import settings
+from knowledge.models import Question, Response, Category
+from knowledge.widgets import CustomRelatedFieldWidgetWrapper
 from django.contrib.admin.widgets import FilteredSelectMultiple
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 OPTIONAL_FIELDS = ['alert', 'phone_number', 'categories', 'status']
 
@@ -23,7 +23,7 @@ def QuestionForm(user, *args, **kwargs):
     on the status of the passed in user.
     """
 
-    if user.is_anonymous():
+    if user.is_anonymous:
         if not settings.ALLOW_ANONYMOUS:
             return None
         else:
@@ -79,7 +79,7 @@ def ResponseForm(user, question, *args, **kwargs):
             (user.is_staff or question.user == user):
         return None
 
-    if user.is_anonymous():
+    if user.is_anonymous:
         if not settings.ALLOW_ANONYMOUS:
             return None
         else:
